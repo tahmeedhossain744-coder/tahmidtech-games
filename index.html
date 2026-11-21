@@ -749,32 +749,50 @@
         }
 
         async function loadAutoGames() {
-            renderCategoryControls();
-            try {
-                const response = await fetch("https://gamemonetize.com/feed.php?format=0&num=1000&page=1");
-                const data = await response.json();
+  renderCategoryControls();
+  try {
+    const pages = [1, 2, 3, 4, 5];
+    const responses = await Promise.all(
+      pages.map(p =>
+        fetch(`https://gamemonetize.com/feed.php?format=0&num=1000&page=${p}`)
+          .then(res => res.ok ? res.json() : [])
+          .catch(() => [])
+      )
+    );
 
-                const autoGames = data.map((item, index) => {
-                    const combinedText = `${item.category || ""} ${item.tags || ""} ${item.title || ""}`;
-                    return {
-                        title: item.title,
-                        dev: item.company || "GameMonetize",
-                        cat: detectCategory(combinedText),
-                        size: index % 8 === 0 ? "2x2" : "1x1",
-                        desc: item.description,
-                        thumb: item.thumb,
-                        url: item.url
-                    };
-                });
+    const combinedRaw = responses.flat().slice(0, 5000);
 
-                games.splice(0, games.length, ...customGames, ...autoGames);
-                renderCategoryControls();
-                renderHomeGrid(games, !isPlaying);
-            } catch (error) {
-                console.error("Game load error:", error);
-                renderCategoryControls();
-                renderHomeGrid(games, !isPlaying);
-            }
+    const seen = new Set();
+    const uniqueItems = combinedRaw.filter(item => {
+      if (!item || !item.url || !item.title) return false;
+      const key = item.url.trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    const autoGames = uniqueItems.map((item, index) => {
+      const combinedText = `${item.category || ""} ${item.tags || ""} ${item.title || ""}`;
+      return {
+        title: item.title,
+        dev: item.company || "GameMonetize",
+        cat: detectCategory(combinedText),
+        size: index % 12 === 0 ? "2x2" : "1x1",
+        desc: item.description || "Play free online game on TahmidTech!",
+        thumb: item.thumb,
+        url: item.url
+      };
+    });
+
+    games.splice(0, games.length, ...customGames, ...autoGames);
+    renderCategoryControls();
+    renderHomeGrid(games, !isPlaying);
+  } catch (error) {
+    console.error("5000 games load error:", error);
+    renderCategoryControls();
+    renderHomeGrid(games, !isPlaying);
+  }
+}
         }
 
         const categoryTiles = ALL_CATEGORIES.slice(0, 6).map((c, idx) => {
