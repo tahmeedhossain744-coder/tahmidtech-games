@@ -666,6 +666,36 @@
                 url: "https://hextris.io/"
             }
         ];
+        // GameMonetize থেকে অটোমেটিক ৫০টি আসল গেম লোড করার কোড
+async function loadAutoGames() {
+  try {
+    const response = await fetch("https://gamemonetize.com/feed.php?format=0&num=50");
+    const data = await response.json();
+    
+    const autoGames = data.map((item, index) => ({
+      title: item.title,
+      dev: item.company || "GameMonetize",
+      cat: "action",
+      size: index % 7 === 0 ? "2x2" : "1x1",
+      desc: item.description,
+      thumb: item.thumb,
+      url: item.url
+    }));
+
+    // পুরনো ডেমো গেম সরিয়ে আসল গেমগুলো বসানো
+    games.splice(1, games.length - 1, ...autoGames);
+    
+    // গ্রিড নতুন করে রেন্ডার করা
+    if (typeof renderGames === "function") {
+      renderGames(games);
+    } else if (typeof displayGames === "function") {
+      displayGames(games);
+    }
+  } catch (error) {
+    console.error("Game load error:", error);
+  }
+}
+loadAutoGames();
 
         const categoryTiles = [
             { name: "Platform Games", cat: "platform", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&q=80" },
