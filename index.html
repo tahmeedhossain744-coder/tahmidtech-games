@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0b0f19">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TahmidTech - Free Online Games</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         :root {
             --text-dark: #002b36;
@@ -555,17 +555,15 @@
     </footer>
 
     <script>
-        // ব্র্যান্ড নাম ও কন্টাক্ট তথ্য (এখানে তোমার আসল ইমেইল বসিয়ে দিও)
         const SITE_NAME_FIRST = "Tahmid";
         const SITE_NAME_SECOND = "Tech";
         const USER_WHATSAPP = "01341725738";
-        const USER_EMAIL = "tahmeedhossain744@gmail.com"; // <-- এখানে তোমার আসল ইমেইল বসাও
+        const USER_EMAIL = "tahmeedhossain744@gmail.com";
 
         document.title = `${SITE_NAME_FIRST}${SITE_NAME_SECOND} - Free Online Games`;
         document.getElementById('railLogoText').innerHTML = `${SITE_NAME_FIRST}<span>${SITE_NAME_SECOND}</span>`;
         document.getElementById('footerBrand').innerHTML = `${SITE_NAME_FIRST}${SITE_NAME_SECOND} <small>Let the world play</small>`;
 
-        // হোয়াটসঅ্যাপ ও ইমেইল বাটন সেট করা
         const waLink = `https://wa.me/88${USER_WHATSAPP}`;
         document.getElementById('contactBar').innerHTML = `
       <a href="${waLink}" target="_blank" class="contact-chip chip-wa">💬 WhatsApp: ${USER_WHATSAPP}</a>
@@ -579,156 +577,70 @@
     `;
 
         const games = [
-             {
-        title: "Tsunami Runner Obby 2",
-        dev: "OneSpark Games",
-        cat: "platform",
-        size: "2x2",
-        desc: "Run as fast as you can to escape the giant tsunami wave and overcome tricky obby obstacles!",
-        thumb: "https://img.gamemonetize.com/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/512x512.jpg",
-        url: "https://html5.gamemonetize.co/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/"
-      },  
             {
-                title: "Deadrise.io",
-                dev: "Arena Games",
-                cat: "adventure",
-                size: "1x1",
-                desc: "Multiplayer tactical arena shooter where fast reflexes win the match.",
-                thumb: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80",
-                url: "https://hextris.io/"
-            },
-            {
-                title: "Stickman Escape",
-                dev: "PEGASUS",
-                cat: "escape",
-                size: "3x3",
-                desc: "Control two stickman characters to unlock doors, dodge lasers, and escape the facility!",
-                thumb: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=600&q=80",
-                url: "https://play2048.co/"
-            },
-            {
-                title: "Kick The Buddy",
-                dev: "Playgendary",
-                cat: "stickman",
-                size: "2x2",
-                desc: "Relieve stress with fun gadgets and hilarious physics interactions.",
-                thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&q=80",
-                url: "https://hextris.io/"
-            },
-            {
-                title: "Blockpost 2.0",
-                dev: "Skullcap",
-                cat: "adventure",
-                size: "1x1",
-                desc: "Cubic 3D multiplayer shooting game with customizable weapons.",
-                thumb: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=400&q=80",
-                url: "https://play2048.co/"
-            },
-            {
-                title: "Subway Surfers",
-                dev: "SYBO Games",
+                title: "Tsunami Runner Obby 2",
+                dev: "OneSpark Games",
                 cat: "platform",
                 size: "2x2",
-                desc: "Dash as fast as you can and dodge the oncoming trains!",
-                thumb: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&q=80",
-                url: "https://hextris.io/"
-            },
-            {
-                title: "Drive Mad",
-                dev: "Martin Magni",
-                cat: "car",
-                size: "3x3",
-                desc: "Drive monster trucks across tricky bridges without flipping over.",
-                thumb: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&q=80",
-                url: "https://play2048.co/"
-            },
-            {
-                title: "My Perfect Hotel",
-                dev: "SayGames",
-                cat: "adventure",
-                size: "2x2",
-                desc: "Build and manage your own 5-star hotel empire from scratch!",
-                thumb: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&q=80",
-                url: "https://hextris.io/"
-            },
-            {
-                title: "Moto X3M",
-                dev: "MadPuffers",
-                cat: "car",
-                size: "1x1",
-                desc: "Perform crazy dirt bike stunts and beat the timer.",
-                thumb: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&q=80",
-                url: "https://play2048.co/"
-            },
-            {
-                title: "Neon Drift",
-                dev: "Drift Lab",
-                cat: "car",
-                size: "1x1",
-                desc: "High-speed cyber car drifting game.",
-                thumb: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&q=80",
-                url: "https://hextris.io/"
+                desc: "Run as fast as you can to escape the giant tsunami wave and overcome tricky obby obstacles!",
+                thumb: "https://img.gamemonetize.com/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/512x512.jpg",
+                url: "https://html5.gamemonetize.co/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/"
             }
         ];
-        // GameMonetize থেকে ২০০টি আসল গেম লোড এবং সব ক্যাটাগরি অটো-ম্যাচ করার কোড
-async function loadAutoGames() {
-  try {
-    // ৫০টির বদলে একসাথে ২০০টি আসল গেম আনা হচ্ছে
-    const response = await fetch("https://gamemonetize.com/feed.php?format=0&num=1000&page=1");
-    const data = await response.json();
-    
-    const autoGames = data.map((item, index) => {
-      // গেমের আসল ক্যাটাগরি ও নাম দেখে তোমার সাইটের ক্যাটাগরির সাথে মেলানো
-      const rawCat = (item.category + " " + item.tags + " " + item.title).toLowerCase();
-      let matchedCat = "adventure";
-      
-      if (rawCat.includes("car") || rawCat.includes("racing") || rawCat.includes("drive") || rawCat.includes("truck")) {
-        matchedCat = "car";
-      } else if (rawCat.includes("stickman") || rawCat.includes("stick")) {
-        matchedCat = "stickman";
-      } else if (rawCat.includes("escape") || rawCat.includes("puzzle") || rawCat.includes("horror")) {
-        matchedCat = "escape";
-      } else if (rawCat.includes("platform") || rawCat.includes("runner") || rawCat.includes("jump") || rawCat.includes("obby")) {
-        matchedCat = "platform";
-      }
 
-      return {
-        title: item.title,
-        dev: item.company || "GameMonetize",
-        cat: matchedCat,
-        size: index % 8 === 0 ? "2x2" : "1x1",
-        desc: item.description,
-        thumb: item.thumb,
-        url: item.url
-      };
-    });
+        let isPlaying = false;
 
-    // পুরনো ডেমো গেম সরিয়ে ২০০টি আসল গেম বসানো (ডুপ্লিকেট ছাড়াই)
-    games.splice(0, games.length, ...autoGames);
-    
-    // নিচের বাটনগুলোর সংখ্যা (Count) অটোমেটিক আপডেট করা
-    document.querySelectorAll('button, a, span').forEach(el => {
-      const txt = el.textContent.trim();
-      if (txt.startsWith("ALL GAMES")) el.innerHTML = `ALL GAMES <span>${games.length}</span>`;
-      if (txt.startsWith("PLATFORM GAMES")) el.innerHTML = `PLATFORM GAMES <span>${games.filter(g => g.cat === 'platform').length}</span>`;
-      if (txt.startsWith("ADVENTURE GAMES")) el.innerHTML = `ADVENTURE GAMES <span>${games.filter(g => g.cat === 'adventure').length}</span>`;
-      if (txt.startsWith("STICKMAN GAMES")) el.innerHTML = `STICKMAN GAMES <span>${games.filter(g => g.cat === 'stickman').length}</span>`;
-      if (txt.startsWith("CAR GAMES")) el.innerHTML = `CAR GAMES <span>${games.filter(g => g.cat === 'car').length}</span>`;
-      if (txt.startsWith("ESCAPE GAMES")) el.innerHTML = `ESCAPE GAMES <span>${games.filter(g => g.cat === 'escape').length}</span>`;
-    });
+        // GameMonetize থেকে ১,০০০টি আসল গেম লোড এবং সব ক্যাটাগরি অটো-ম্যাচ করার কোড
+        async function loadAutoGames() {
+            try {
+                const response = await fetch("https://gamemonetize.com/feed.php?format=0&num=1000&page=1");
+                const data = await response.json();
 
-    // গ্রিড নতুন করে রেন্ডার করা
-    if (typeof renderGames === "function") {
-      renderGames(games);
-    } else if (typeof displayGames === "function") {
-      displayGames(games);
-    }
-  } catch (error) {
-    console.error("Game load error:", error);
-  }
-}
-loadAutoGames();
+                const autoGames = data.map((item, index) => {
+                    const rawCat = (item.category + " " + item.tags + " " + item.title).toLowerCase();
+                    let matchedCat = "adventure";
 
+                    if (rawCat.includes("car") || rawCat.includes("racing") || rawCat.includes("drive") || rawCat.includes("truck")) {
+                        matchedCat = "car";
+                    } else if (rawCat.includes("stickman") || rawCat.includes("stick")) {
+                        matchedCat = "stickman";
+                    } else if (rawCat.includes("escape") || rawCat.includes("puzzle") || rawCat.includes("horror")) {
+                        matchedCat = "escape";
+                    } else if (rawCat.includes("platform") || rawCat.includes("runner") || rawCat.includes("jump") || rawCat.includes("obby")) {
+                        matchedCat = "platform";
+                    }
+
+                    return {
+                        title: item.title,
+                        dev: item.company || "GameMonetize",
+                        cat: matchedCat,
+                        size: index % 8 === 0 ? "2x2" : "1x1",
+                        desc: item.description,
+                        thumb: item.thumb,
+                        url: item.url
+                    };
+                });
+
+                games.splice(0, games.length, ...autoGames);
+
+                // নিচের বাটনগুলোর সংখ্যা (Count) অটোমেটিক আপডেট করা
+                document.querySelectorAll('button, a, span').forEach(el => {
+                    const txt = el.textContent.trim();
+                    if (txt.startsWith("ALL GAMES")) el.innerHTML = `ALL GAMES <span>${games.length}</span>`;
+                    if (txt.startsWith("PLATFORM GAMES")) el.innerHTML = `PLATFORM GAMES <span>${games.filter(g => g.cat === 'platform').length}</span>`;
+                    if (txt.startsWith("ADVENTURE GAMES")) el.innerHTML = `ADVENTURE GAMES <span>${games.filter(g => g.cat === 'adventure').length}</span>`;
+                    if (txt.startsWith("STICKMAN GAMES")) el.innerHTML = `STICKMAN GAMES <span>${games.filter(g => g.cat === 'stickman').length}</span>`;
+                    if (txt.startsWith("CAR GAMES")) el.innerHTML = `CAR GAMES <span>${games.filter(g => g.cat === 'car').length}</span>`;
+                    if (txt.startsWith("ESCAPE GAMES")) el.innerHTML = `ESCAPE GAMES <span>${games.filter(g => g.cat === 'escape').length}</span>`;
+                });
+
+                // গ্রিড নতুন করে রেন্ডার করা
+                renderHomeGrid(games, !isPlaying);
+            } catch (error) {
+                console.error("Game load error:", error);
+            }
+        }
+        loadAutoGames();
 
         const categoryTiles = [
             { name: "Platform Games", cat: "platform", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&q=80" },
@@ -737,8 +649,6 @@ loadAutoGames();
             { name: "Car Games", cat: "car", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80" },
             { name: "Escape Games", cat: "escape", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80" }
         ];
-
-        let isPlaying = false;
 
         function renderHomeGrid(gameList, showBrandCard = true) {
             const grid = document.getElementById('mainBentoGrid');
@@ -852,38 +762,41 @@ loadAutoGames();
             else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
         }
 
-        goHome()
+        goHome();
+    </script>
+
+    <!-- PWA অ্যাপ ইনস্টল বাটন ও সার্ভিস ওয়ার্কার -->
     <button id="pwaInstallBtn" style="display:none; position:fixed; bottom:20px; right:20px; z-index:9999; background:linear-gradient(135deg,#00d2ff,#3a7bd5); color:#fff; border:none; padding:12px 20px; border-radius:50px; font-weight:bold; font-size:14px; box-shadow:0 4px 15px rgba(0,0,0,0.4); cursor:pointer;">
-  📲 Install App
-</button>
+        📲 Install App
+    </button>
 
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(err => console.log("SW error:", err));
-    });
-  }
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").catch(err => console.log("SW error:", err));
+            });
+        }
 
-  let deferredPrompt;
-  const installBtn = document.getElementById("pwaInstallBtn");
+        let deferredPrompt;
+        const installBtn = document.getElementById("pwaInstallBtn");
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = "block";
-  });
+        window.addEventListener("beforeinstallprompt", (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = "block";
+        });
 
-  installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      installBtn.style.display = "none";
-    }
-    deferredPrompt = null;
-  });
-</script>
-    
+        installBtn.addEventListener("click", async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === "accepted") {
+                installBtn.style.display = "none";
+            }
+            deferredPrompt = null;
+        });
+    </script>
+
 </body>
 
 </html>
