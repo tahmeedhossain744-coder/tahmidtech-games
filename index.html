@@ -770,32 +770,42 @@
         📲 Install App
     </button>
 
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("sw.js").catch(err => console.log("SW error:", err));
-            });
-        }
+    <button id="pwaInstallBtn" style="position:fixed; bottom:20px; right:20px; z-index:9999; background:linear-gradient(135deg,#00d2ff,#0077b6); color:#fff; border:none; padding:12px 20px; border-radius:50px; font-weight:800; font-size:14px; box-shadow:0 6px 18px rgba(0,0,0,0.35); cursor:pointer;">
+  📲 Install App
+</button>
 
-        let deferredPrompt;
-        const installBtn = document.getElementById("pwaInstallBtn");
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(err => console.log("SW error:", err));
+    });
+  }
 
-        window.addEventListener("beforeinstallprompt", (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = "block";
-        });
+  let deferredPrompt;
+  const installBtn = document.getElementById("pwaInstallBtn");
 
-        installBtn.addEventListener("click", async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === "accepted") {
-                installBtn.style.display = "none";
-            }
-            deferredPrompt = null;
-        });
-    </script>
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  installBtn.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        installBtn.style.display = "none";
+      }
+      deferredPrompt = null;
+    } else {
+      alert("TahmidTech অ্যাপ ইনস্টল করতে:\n• Chrome-এর উপরে ডানদিকে (⋮) মেনুতে ক্লিক করুন\n• 'Install app' অথবা 'Add to Home screen' সিলেক্ট করুন।");
+    }
+  });
+
+  window.addEventListener("appinstalled", () => {
+    installBtn.style.display = "none";
+  });
+</script>
 
 </body>
 
