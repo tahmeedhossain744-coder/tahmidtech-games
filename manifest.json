@@ -1,0 +1,25 @@
+{
+  "name": "TahmidTech Games",
+  "short_name": "TahmidTech",
+  "description": "Play free online HTML5 games instantly on TahmidTech!",
+  "start_url": "/tahmidtech-games/",
+  "scope": "/tahmidtech-games/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "https://img.gamemonetize.com/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/512x512.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.gamemonetize.com/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/512x512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
