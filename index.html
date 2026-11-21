@@ -40,6 +40,100 @@
             padding: 16px;
         }
 
+        /* ওয়েবসাইটের ওপরে ৩০টি ক্যাটাগরি ও সার্চ বাটন বার */
+        .top-nav-panel {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-tile);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .top-bar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .top-brand-badge {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-brand-badge span {
+            color: var(--accent-blue);
+        }
+
+        .top-search-btn {
+            background: linear-gradient(135deg, #0099ff, #0066cc);
+            color: #ffffff;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0, 153, 255, 0.28);
+            transition: transform 0.15s ease;
+        }
+
+        .top-search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .cat-scroll-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            max-height: 112px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .cat-pill {
+            background: #f1f5f9;
+            color: var(--text-dark);
+            border: 1px solid #e2e8f0;
+            padding: 6px 11px;
+            border-radius: 10px;
+            font-size: 11.5px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .cat-pill:hover,
+        .cat-pill.active {
+            background: #002b36;
+            color: #ffffff;
+            border-color: #002b36;
+        }
+
+        .cat-pill span {
+            color: var(--accent-blue);
+            margin-left: 3px;
+        }
+
+        .cat-pill.active span,
+        .cat-pill:hover span {
+            color: #7ee3d4;
+        }
+
         /* সার্চ বার */
         .search-drawer {
             display: none;
@@ -65,7 +159,7 @@
             color: var(--text-dark);
         }
 
-        /* গেম প্লেয়ার ভিউ (গেমে ক্লিক করলে খুলবে) */
+        /* গেম প্লেয়ার ভিউ */
         .player-stage {
             display: none;
             grid-template-columns: 104px 1fr;
@@ -205,7 +299,7 @@
             background: #e0f2fe;
         }
 
-        /* হোম পেজ বেন্টো গ্রিড (১x১, ২x২ এবং ৩x৩ টাইলস) */
+        /* বেন্টো গ্রিড */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
@@ -270,7 +364,6 @@
             line-height: 1.2;
         }
 
-        /* ২x১ চওড়া ক্যাটাগরি টাইলস */
         .category-tile-wide {
             grid-column: span 2;
             grid-row: span 1;
@@ -304,7 +397,7 @@
             line-height: 1.25;
         }
 
-        /* নিচের SEO ও তথ্য কার্ড */
+        /* নিচের তথ্য কার্ড */
         .info-card {
             background: #ffffff;
             border-radius: 24px;
@@ -339,16 +432,16 @@
         .related-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             margin-top: 14px;
         }
 
         .rel-tag {
             background: #f1f5f9;
             border: none;
-            padding: 9px 14px;
+            padding: 8px 12px;
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 800;
             color: var(--text-dark);
             cursor: pointer;
@@ -363,7 +456,6 @@
             background: #e0f2fe;
         }
 
-        /* যোগাযোগ বাটন (WhatsApp ও Email) */
         .contact-bar {
             display: flex;
             flex-wrap: wrap;
@@ -403,7 +495,6 @@
             background: #bae6fd;
         }
 
-        /* ডার্ক ফুটার */
         footer {
             background: #002b36;
             color: #ffffff;
@@ -470,6 +561,19 @@
 
     <div class="container">
 
+        <!-- ওয়েবসাইটের ওপরে ৩০টি ক্যাটাগরি ও সার্চ বাটন -->
+        <div class="top-nav-panel" id="topNavPanel">
+            <div class="top-bar-header">
+                <div class="top-brand-badge" onclick="goHome()" id="topBrandText">
+                    🎮 Tahmid<span>Tech</span>
+                </div>
+                <button class="top-search-btn" onclick="toggleSearch()">
+                    🔍 Search Games
+                </button>
+            </div>
+            <div class="cat-scroll-list" id="topCategoryBar"></div>
+        </div>
+
         <!-- সার্চ বার -->
         <div class="search-drawer" id="searchDrawer">
             <span style="font-size:20px;">🔍</span>
@@ -479,7 +583,7 @@
                 style="border:none;background:none;font-size:18px;cursor:pointer;font-weight:bold;">✕</button>
         </div>
 
-        <!-- গেম খেলার পেজ (শুরুতে লুকানো থাকবে, গেমে ক্লিক করলে চালু হবে) -->
+        <!-- গেম খেলার পেজ -->
         <div class="player-stage" id="playerStage">
             <div class="left-rail">
                 <div class="brand-card">
@@ -514,7 +618,7 @@
             </div>
         </div>
 
-        <!-- হোম পেজ এবং গেম গ্রিড -->
+        <!-- বেন্টো গ্রিড -->
         <div class="bento-grid" id="mainBentoGrid"></div>
 
         <!-- নিচের বিবরণ ও কন্টাক্ট কার্ড -->
@@ -528,20 +632,7 @@
                 Play the best free online games directly in your browser on TahmidTech with no downloads required!
                 Choose from popular action, platform, stickman, car racing, and multiplayer challenges.
             </p>
-            <div class="related-tags">
-                <button class="rel-tag" onclick="goHome()">ALL GAMES <span>980</span></button>
-                <button class="rel-tag" onclick="filterByCat('platform', 'Platform Games')">PLATFORM GAMES
-                    <span>346</span></button>
-                <button class="rel-tag" onclick="filterByCat('adventure', 'Adventure Games')">ADVENTURE GAMES
-                    <span>406</span></button>
-                <button class="rel-tag" onclick="filterByCat('stickman', 'Stickman Games')">STICKMAN GAMES
-                    <span>88</span></button>
-                <button class="rel-tag" onclick="filterByCat('car', 'Car Games')">CAR GAMES <span>142</span></button>
-                <button class="rel-tag" onclick="filterByCat('escape', 'Escape Games')">ESCAPE GAMES
-                    <span>65</span></button>
-            </div>
-
-            <!-- সরাসরি যোগাযোগ লিংক -->
+            <div class="related-tags" id="bottomCategoryTags"></div>
             <div class="contact-bar" id="contactBar"></div>
         </div>
 
@@ -561,6 +652,7 @@
         const USER_EMAIL = "tahmeedhossain744@gmail.com";
 
         document.title = `${SITE_NAME_FIRST}${SITE_NAME_SECOND} - Free Online Games`;
+        document.getElementById('topBrandText').innerHTML = `🎮 ${SITE_NAME_FIRST}<span>${SITE_NAME_SECOND}</span>`;
         document.getElementById('railLogoText').innerHTML = `${SITE_NAME_FIRST}<span>${SITE_NAME_SECOND}</span>`;
         document.getElementById('footerBrand').innerHTML = `${SITE_NAME_FIRST}${SITE_NAME_SECOND} <small>Let the world play</small>`;
 
@@ -576,44 +668,98 @@
       <span style="color:#cbd5e1;">© 2026 ${SITE_NAME_FIRST}${SITE_NAME_SECOND}</span>
     `;
 
-        const games = [
+        // পুরনো ৫টি + নতুন ২৫টি = মোট ৩০টি ক্যাটাগরি
+        const ALL_CATEGORIES = [
+            { slug: "platform", label: "Platform Games", keywords: ["platform", "jump", "bounce", "climb"] },
+            { slug: "adventure", label: "Adventure Games", keywords: ["adventure", "quest", "explore", "island", "pirate"] },
+            { slug: "stickman", label: "Stickman Games", keywords: ["stickman", "stick"] },
+            { slug: "car", label: "Car Games", keywords: ["car", "vehicle", "suv", "jeep"] },
+            { slug: "escape", label: "Escape Games", keywords: ["escape", "door", "prison", "breakout"] },
+            { slug: "shooter", label: "Shooter Games", keywords: ["shooter", "gun", "shoot", "sniper", "fps"] },
+            { slug: "puzzle", label: "Puzzle Games", keywords: ["puzzle", "logic", "block", "sort", "brain"] },
+            { slug: "racing", label: "Racing Games", keywords: ["racing", "race", "drift", "speed", "rally"] },
+            { slug: "arcade", label: "Arcade Games", keywords: ["arcade", "retro", "coin", "hit", "tap"] },
+            { slug: "action", label: "Action Games", keywords: ["action", "battle", "war", "strike", "combat"] },
+            { slug: "sports", label: "Sports Games", keywords: ["sports", "football", "soccer", "basketball", "tennis", "golf"] },
+            { slug: "zombie", label: "Zombie Games", keywords: ["zombie", "undead", "dead", "apocalypse"] },
+            { slug: "simulation", label: "Simulation Games", keywords: ["simulation", "simulator", "life", "doctor", "farm"] },
+            { slug: "strategy", label: "Strategy Games", keywords: ["strategy", "tactical", "command", "empire", "army"] },
+            { slug: "obby", label: "Obby & Parkour", keywords: ["obby", "parkour", "obstacle"] },
+            { slug: "multiplayer", label: "2 Player Games", keywords: ["2 player", "two player", "multiplayer", "1v1", "2p", "arena"] },
+            { slug: "horror", label: "Horror Games", keywords: ["horror", "scary", "haunted", "creepy", "ghost"] },
+            { slug: "girls", label: "Dress Up & Girls", keywords: ["dress", "girl", "princess", "makeup", "fashion", "salon"] },
+            { slug: "io", label: "IO Games", keywords: [".io", " io ", "snake", "worm"] },
+            { slug: "match", label: "Match 3 & Sort", keywords: ["match", "tile", "mahjong", "connect", "pair"] },
+            { slug: "driving", label: "Driving & Parking", keywords: ["driving", "parking", "drive", "truck", "bus", "taxi"] },
+            { slug: "fighting", label: "Fighting & Boxing", keywords: ["fight", "fighting", "boxing", "wrestling", "martial", "punch"] },
+            { slug: "runner", label: "Runner Games", keywords: ["runner", "run", "endless", "dash", "sprint"] },
+            { slug: "card", label: "Card & Board", keywords: ["card", "solitaire", "chess", "board", "dice", "bingo"] },
+            { slug: "music", label: "Music & Rhythm", keywords: ["music", "rhythm", "piano", "beat", "song", "dance"] },
+            { slug: "tycoon", label: "Tycoon & Idle", keywords: ["tycoon", "idle", "business", "shop", "money", "factory"] },
+            { slug: "craft", label: "Craft & Sandbox", keywords: ["craft", "sandbox", "build", "mine", "voxel"] },
+            { slug: "tower", label: "Tower & Defense", keywords: ["tower", "defense", "defend", "castle"] },
+            { slug: "animal", label: "Animal & Pet", keywords: ["animal", "pet", "cat", "dog", "dino", "fish", "horse"] },
+            { slug: "casual", label: "Casual Games", keywords: ["casual", "fun", "hypercasual", "merge", "pop"] }
+        ];
+
+        // বাইরে থেকে নতুন গেম যোগ করার তালিকা (এখানে নিজের নতুন গেম যোগ করতে পারবে)
+        const customGames = [
             {
-                title: "Tsunami Runner Obby 2",
-                dev: "OneSpark Games",
-                cat: "platform",
-                size: "2x2",
-                desc: "Run as fast as you can to escape the giant tsunami wave and overcome tricky obby obstacles!",
-                thumb: "https://img.gamemonetize.com/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/512x512.jpg",
-                url: "https://html5.gamemonetize.co/rvl0ai04xvjru4wrs3k1c0ckh3eci1xm/"
+                title: "Silver Tale",
+                dev: "Mad Data",
+                cat: "match",
+                size: "1x1",
+                desc: "Take a fantastical journey across the kingdom and save the King! Explore huge match-3 levels, solve quests, and collect rare artifacts.",
+                thumb: "https://img.gamedistribution.com/09cc3e36789c4e2c8f075d8a4982426f-512x512.jpg",
+                url: "https://html5.gamedistribution.com/09cc3e36789c4e2c8f075d8a4982426f/"
             }
         ];
 
+        const games = [...customGames];
         let isPlaying = false;
+        let activeCategorySlug = "all";
 
-        // GameMonetize থেকে ১,০০০টি আসল গেম লোড এবং সব ক্যাটাগরি অটো-ম্যাচ করার কোড
+        function detectCategory(text) {
+            const lower = text.toLowerCase();
+            for (const c of ALL_CATEGORIES) {
+                if (c.keywords.some(kw => lower.includes(kw))) {
+                    return c.slug;
+                }
+            }
+            return "adventure";
+        }
+
+        function renderCategoryControls() {
+            const topBar = document.getElementById('topCategoryBar');
+            const bottomTags = document.getElementById('bottomCategoryTags');
+
+            const allCount = games.length;
+            let topHtml = `<button class="cat-pill ${activeCategorySlug === 'all' ? 'active' : ''}" onclick="goHome()">ALL GAMES <span>${allCount}</span></button>`;
+            let bottomHtml = `<button class="rel-tag" onclick="goHome()">ALL GAMES <span>${allCount}</span></button>`;
+
+            ALL_CATEGORIES.forEach(cat => {
+                const count = games.filter(g => g.cat === cat.slug).length;
+                const isActive = activeCategorySlug === cat.slug ? 'active' : '';
+                topHtml += `<button class="cat-pill ${isActive}" onclick="filterByCat('${cat.slug}', '${cat.label}')">${cat.label.toUpperCase()} <span>${count}</span></button>`;
+                bottomHtml += `<button class="rel-tag" onclick="filterByCat('${cat.slug}', '${cat.label}')">${cat.label.toUpperCase()} <span>${count}</span></button>`;
+            });
+
+            topBar.innerHTML = topHtml;
+            bottomTags.innerHTML = bottomHtml;
+        }
+
         async function loadAutoGames() {
+            renderCategoryControls();
             try {
                 const response = await fetch("https://gamemonetize.com/feed.php?format=0&num=1000&page=1");
                 const data = await response.json();
 
                 const autoGames = data.map((item, index) => {
-                    const rawCat = (item.category + " " + item.tags + " " + item.title).toLowerCase();
-                    let matchedCat = "adventure";
-
-                    if (rawCat.includes("car") || rawCat.includes("racing") || rawCat.includes("drive") || rawCat.includes("truck")) {
-                        matchedCat = "car";
-                    } else if (rawCat.includes("stickman") || rawCat.includes("stick")) {
-                        matchedCat = "stickman";
-                    } else if (rawCat.includes("escape") || rawCat.includes("puzzle") || rawCat.includes("horror")) {
-                        matchedCat = "escape";
-                    } else if (rawCat.includes("platform") || rawCat.includes("runner") || rawCat.includes("jump") || rawCat.includes("obby")) {
-                        matchedCat = "platform";
-                    }
-
+                    const combinedText = `${item.category || ""} ${item.tags || ""} ${item.title || ""}`;
                     return {
                         title: item.title,
                         dev: item.company || "GameMonetize",
-                        cat: matchedCat,
+                        cat: detectCategory(combinedText),
                         size: index % 8 === 0 ? "2x2" : "1x1",
                         desc: item.description,
                         thumb: item.thumb,
@@ -621,34 +767,27 @@
                     };
                 });
 
-                games.splice(0, games.length, ...autoGames);
-
-                // নিচের বাটনগুলোর সংখ্যা (Count) অটোমেটিক আপডেট করা
-                document.querySelectorAll('button, a, span').forEach(el => {
-                    const txt = el.textContent.trim();
-                    if (txt.startsWith("ALL GAMES")) el.innerHTML = `ALL GAMES <span>${games.length}</span>`;
-                    if (txt.startsWith("PLATFORM GAMES")) el.innerHTML = `PLATFORM GAMES <span>${games.filter(g => g.cat === 'platform').length}</span>`;
-                    if (txt.startsWith("ADVENTURE GAMES")) el.innerHTML = `ADVENTURE GAMES <span>${games.filter(g => g.cat === 'adventure').length}</span>`;
-                    if (txt.startsWith("STICKMAN GAMES")) el.innerHTML = `STICKMAN GAMES <span>${games.filter(g => g.cat === 'stickman').length}</span>`;
-                    if (txt.startsWith("CAR GAMES")) el.innerHTML = `CAR GAMES <span>${games.filter(g => g.cat === 'car').length}</span>`;
-                    if (txt.startsWith("ESCAPE GAMES")) el.innerHTML = `ESCAPE GAMES <span>${games.filter(g => g.cat === 'escape').length}</span>`;
-                });
-
-                // গ্রিড নতুন করে রেন্ডার করা
+                games.splice(0, games.length, ...customGames, ...autoGames);
+                renderCategoryControls();
                 renderHomeGrid(games, !isPlaying);
             } catch (error) {
                 console.error("Game load error:", error);
+                renderCategoryControls();
+                renderHomeGrid(games, !isPlaying);
             }
         }
-        loadAutoGames();
 
-        const categoryTiles = [
-            { name: "Platform Games", cat: "platform", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&q=80" },
-            { name: "Adventure Games", cat: "adventure", img: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=300&q=80" },
-            { name: "Stickman Games", cat: "stickman", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300&q=80" },
-            { name: "Car Games", cat: "car", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80" },
-            { name: "Escape Games", cat: "escape", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80" }
-        ];
+        const categoryTiles = ALL_CATEGORIES.slice(0, 6).map((c, idx) => {
+            const imgs = [
+                "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&q=80",
+                "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=300&q=80",
+                "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300&q=80",
+                "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80",
+                "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
+                "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&q=80"
+            ];
+            return { name: c.label, cat: c.slug, img: imgs[idx % imgs.length] };
+        });
 
         function renderHomeGrid(gameList, showBrandCard = true) {
             const grid = document.getElementById('mainBentoGrid');
@@ -723,23 +862,27 @@
 
         function goHome() {
             isPlaying = false;
+            activeCategorySlug = "all";
             document.getElementById('playerStage').classList.remove('active');
             document.getElementById('gameIframe').src = '';
             document.getElementById('searchInput').value = '';
             document.getElementById('breadTitle').innerText = 'POPULAR GAMES';
             document.getElementById('infoHeading').innerText = `Free Online Games on ${SITE_NAME_FIRST}${SITE_NAME_SECOND}`;
             document.getElementById('infoBody').innerText = 'Play the best free online games directly in your browser on TahmidTech with no downloads required!';
+            renderCategoryControls();
             renderHomeGrid(games, true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function filterByCat(cat, title) {
             isPlaying = false;
+            activeCategorySlug = cat;
             document.getElementById('playerStage').classList.remove('active');
             document.getElementById('gameIframe').src = '';
             const filtered = games.filter(g => g.cat === cat);
             document.getElementById('breadTitle').innerText = title.toUpperCase();
             document.getElementById('infoHeading').innerText = title;
+            renderCategoryControls();
             renderHomeGrid(filtered, true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -762,50 +905,46 @@
             else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
         }
 
-        goHome();
+        loadAutoGames();
     </script>
 
     <!-- PWA অ্যাপ ইনস্টল বাটন ও সার্ভিস ওয়ার্কার -->
-    <button id="pwaInstallBtn" style="display:none; position:fixed; bottom:20px; right:20px; z-index:9999; background:linear-gradient(135deg,#00d2ff,#3a7bd5); color:#fff; border:none; padding:12px 20px; border-radius:50px; font-weight:bold; font-size:14px; box-shadow:0 4px 15px rgba(0,0,0,0.4); cursor:pointer;">
+    <button id="pwaInstallBtn" style="position:fixed; bottom:20px; right:20px; z-index:9999; background:linear-gradient(135deg,#00d2ff,#0077b6); color:#fff; border:none; padding:12px 20px; border-radius:50px; font-weight:800; font-size:14px; box-shadow:0 6px 18px rgba(0,0,0,0.35); cursor:pointer;">
         📲 Install App
     </button>
 
-    <button id="pwaInstallBtn" style="position:fixed; bottom:20px; right:20px; z-index:9999; background:linear-gradient(135deg,#00d2ff,#0077b6); color:#fff; border:none; padding:12px 20px; border-radius:50px; font-weight:800; font-size:14px; box-shadow:0 6px 18px rgba(0,0,0,0.35); cursor:pointer;">
-  📲 Install App
-</button>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").catch(err => console.log("SW error:", err));
+            });
+        }
 
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(err => console.log("SW error:", err));
-    });
-  }
+        let deferredPrompt;
+        const installBtn = document.getElementById("pwaInstallBtn");
 
-  let deferredPrompt;
-  const installBtn = document.getElementById("pwaInstallBtn");
+        window.addEventListener("beforeinstallprompt", (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-  });
+        installBtn.addEventListener("click", async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === "accepted") {
+                    installBtn.style.display = "none";
+                }
+                deferredPrompt = null;
+            } else {
+                alert("TahmidTech অ্যাপ ইনস্টল করতে:\n• Chrome-এর উপরে ডানদিকে (⋮) মেনুতে ক্লিক করুন\n• 'Install app' অথবা 'Add to Home screen' সিলেক্ট করুন।");
+            }
+        });
 
-  installBtn.addEventListener("click", async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") {
-        installBtn.style.display = "none";
-      }
-      deferredPrompt = null;
-    } else {
-      alert("TahmidTech অ্যাপ ইনস্টল করতে:\n• Chrome-এর উপরে ডানদিকে (⋮) মেনুতে ক্লিক করুন\n• 'Install app' অথবা 'Add to Home screen' সিলেক্ট করুন।");
-    }
-  });
-
-  window.addEventListener("appinstalled", () => {
-    installBtn.style.display = "none";
-  });
-</script>
+        window.addEventListener("appinstalled", () => {
+            installBtn.style.display = "none";
+        });
+    </script>
 
 </body>
 
