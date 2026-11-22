@@ -302,7 +302,7 @@
             position: relative;
             cursor: pointer;
             box-shadow: var(--shadow-tile);
-            transition: transform 0.2s ease;
+            transition: transform 0.18s ease;
         }
 
         .game-tile.size-2x2 {
@@ -330,7 +330,7 @@
             align-items: flex-end;
             padding: 8px;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.18s ease;
         }
 
         .game-tile:hover .tile-title-hover {
@@ -515,7 +515,6 @@
             text-decoration: none;
         }
 
-        /* মোবাইল রেসপন্সিভ ফিক্স */
         @media (max-width: 768px) {
             .player-stage.active {
                 grid-template-columns: 1fr;
@@ -657,7 +656,8 @@
         const USER_EMAIL = "tahmeedhossain744@gmail.com";
         const MAX_GAMES_TARGET = 5000;
         const IS_MOBILE = window.innerWidth <= 768;
-        const INITIAL_DISPLAY_LIMIT = IS_MOBILE ? 60 : 240;
+        const INITIAL_DISPLAY_LIMIT = IS_MOBILE ? 36 : 80;
+        const STEP_DISPLAY_LIMIT = IS_MOBILE ? 36 : 60;
 
         document.title = `${SITE_NAME_FIRST}${SITE_NAME_SECOND} - Free Online Games`;
         document.getElementById('topBrandText').innerHTML = `🎮 ${SITE_NAME_FIRST}<span>${SITE_NAME_SECOND}</span>`;
@@ -724,6 +724,14 @@
         ];
 
         const games = [...customGames];
+        const categoryCounts = {};
+        ALL_CATEGORIES.forEach(c => { categoryCounts[c.slug] = 0; });
+
+        const seenUrls = new Set();
+        let nextFeedPage = 1;
+        let isFetchingPage = false;
+        let allFeedsExhausted = false;
+
         let currentList = [...games];
         let displayLimit = INITIAL_DISPLAY_LIMIT;
         let isPlaying = false;
@@ -739,6 +747,42 @@
             return "adventure";
         }
 
+        function registerGames(rawList) {
+            let added = 0;
+            for (const item of rawList) {
+                if (games.length >= MAX_GAMES_TARGET) {
+                    allFeedsExhausted = true;
+                    break;
+                }
+                if (!item || !item.url || !item.title) continue;
+                const urlKey = String(item.url).trim();
+                if (seenUrls.has(urlKey)) continue;
+                seenUrls.add(urlKey);
+
+                const combinedText = `${item.category || ""} ${item.tags || ""} ${item.title || ""}`;
+                const catSlug = item.cat || detectCategory(combinedText);
+                const idx = games.length;
+
+                games.push({
+                    title: item.title,
+                    dev: item.company || item.dev || "GameMonetize",
+                    cat: catSlug,
+                    size: item.size || (idx % 14 === 0 ? "2x2" : "1x1"),
+                    desc: item.description || item.desc || "Play free online game on TahmidTech!",
+                    thumb: item.thumb,
+                    url: urlKey
+                });
+
+                if (categoryCounts[catSlug] !== undefined) {
+                    categoryCounts[catSlug] += 1;
+                }
+                added += 1;
+            }
+            return added;
+        }
+
+        registerGames(customGames);
+
         function renderCategoryControls() {
             const topBar = document.getElementById('topCategoryBar');
             const bottomTags = document.getElementById('bottomCategoryTags');
@@ -748,7 +792,7 @@
             let bottomHtml = `<button class="rel-tag" onclick="goHome()">ALL GAMES <span>${allCount}</span></button>`;
 
             ALL_CATEGORIES.forEach(cat => {
-                const count = games.filter(g => g.cat === cat.slug).length;
+                const count = categoryCounts[cat.slug] || 0;
                 const isActive = activeCategorySlug === cat.slug ? 'active' : '';
                 topHtml += `<button class="cat-pill ${isActive}" onclick="filterByCat('${cat.slug}', '${cat.label}')">${cat.label.toUpperCase()} <span>${count}</span></button>`;
                 bottomHtml += `<button class="rel-tag" onclick="filterByCat('${cat.slug}', '${cat.label}')">${cat.label.toUpperCase()} <span>${count}</span></button>`;
@@ -758,80 +802,44 @@
             bottomTags.innerHTML = bottomHtml;
         }
 
-        function mapFeedItems(rawList, startIndex = 0) {
-            return rawList.map((item, idx) => {
-                const combinedText = `${item.category || ""} ${item.tags || ""} ${item.title || ""}`;
-                return {
-                    title: item.title,
-                    dev: item.company || "GameMonetize",
-                    cat: detectCategory(combinedText),
-                    size: (startIndex + idx) % 12 === 0 ? "2x2" : "1x1",
-                    desc: item.description || "Play free online game on TahmidTech!",
-                    thumb: item.thumb,
-                    url: item.url
-                };
-            });
+        async function fetchNextFeedPage() {
+            if (isFetchingPage || allFeedsExhausted || nextFeedPage > 5 || games.length >= MAX_GAMES_TARGET) {
+                return false;
+            }
+            isFetchingPage = true;
+            const pageToLoad = nextFeedPage;
+            nextFeedPage += 1;
+
+            try {
+                const res = await fetch(`https://gamemonetize.com/feed.php?format=0&num=1000&page=${pageToLoad}`);
+                if (!res.ok) {
+                    if (pageToLoad >= 5) allFeedsExhausted = true;
+                    return false;
+                }
+                const data = await res.json();
+                if (!Array.isArray(data) || data.length === 0) {
+                    allFeedsExhausted = true;
+                    return false;
+                }
+                const added = registerGames(data);
+                if (added === 0 && pageToLoad >= 5) {
+                    allFeedsExhausted = true;
+                }
+                return added > 0;
+            } catch (e) {
+                return false;
+            } finally {
+                isFetchingPage = false;
+            }
         }
 
-        async function loadAutoGames() {
+        async function loadInitialFeed() {
             renderCategoryControls();
             renderHomeGrid(games, !isPlaying);
 
-            const seen = new Set(customGames.map(g => g.url.trim()));
-
-            try {
-                // ধাপ ১: মোবাইলে দ্রুত লোড হওয়ার জন্য আগে page=1 আনা হচ্ছে
-                const firstRes = await fetch("https://gamemonetize.com/feed.php?format=0&num=1000&page=1");
-                if (firstRes.ok) {
-                    const firstData = await firstRes.json();
-                    if (Array.isArray(firstData)) {
-                        const uniqueFirst = firstData.filter(item => {
-                            if (!item || !item.url || !item.title) return false;
-                            const key = String(item.url).trim();
-                            if (seen.has(key)) return false;
-                            seen.add(key);
-                            return true;
-                        });
-                        games.push(...mapFeedItems(uniqueFirst, games.length));
-                        currentList = [...games];
-                        renderCategoryControls();
-                        renderHomeGrid(currentList, !isPlaying);
-                    }
-                }
-
-                // ধাপ ২: বাকি পেজগুলো (২ থেকে ৫) এনে মোট ৫,০০০ পর্যন্ত পূর্ণ করা
-                const extraPages = [2, 3, 4, 5];
-                const extraResults = await Promise.allSettled(
-                    extraPages.map(p =>
-                        fetch(`https://gamemonetize.com/feed.php?format=0&num=1000&page=${p}`)
-                            .then(res => (res.ok ? res.json() : []))
-                    )
-                );
-
-                const extraRaw = extraResults
-                    .filter(r => r.status === "fulfilled" && Array.isArray(r.value))
-                    .flatMap(r => r.value);
-
-                const uniqueExtra = [];
-                for (const item of extraRaw) {
-                    if (games.length + uniqueExtra.length >= MAX_GAMES_TARGET) break;
-                    if (!item || !item.url || !item.title) continue;
-                    const key = String(item.url).trim();
-                    if (seen.has(key)) continue;
-                    seen.add(key);
-                    uniqueExtra.push(item);
-                }
-
-                if (uniqueExtra.length > 0) {
-                    games.push(...mapFeedItems(uniqueExtra, games.length));
-                    if (activeCategorySlug === "all" && !document.getElementById('searchInput').value.trim()) {
-                        currentList = [...games];
-                        renderHomeGrid(currentList, !isPlaying);
-                    }
-                    renderCategoryControls();
-                }
-            } catch (error) {
-                console.error("Game load error:", error);
+            const gotGames = await fetchNextFeedPage();
+            if (gotGames) {
+                currentList = games;
                 renderCategoryControls();
                 renderHomeGrid(currentList, !isPlaying);
             }
@@ -854,7 +862,7 @@
             const grid = document.getElementById('mainBentoGrid');
             const loadMoreWrap = document.getElementById('loadMoreWrap');
             const loadMoreBtn = document.getElementById('loadMoreBtn');
-            grid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
 
             if (!isPlaying && showBrandCard) {
                 const logoCard = document.createElement('div');
@@ -866,7 +874,7 @@
             <button class="rail-btn" title="Search" onclick="toggleSearch()">🔍</button>
           </div>
         `;
-                grid.appendChild(logoCard);
+                fragment.appendChild(logoCard);
             }
 
             const visibleGames = gameList.slice(0, displayLimit);
@@ -880,10 +888,10 @@
                 tile.className = 'game-tile' + sizeClass;
                 tile.onclick = () => playGame(g);
                 tile.innerHTML = `
-          <img src="${g.thumb}" alt="${g.title}" loading="lazy" />
+          <img src="${g.thumb}" alt="${g.title}" loading="lazy" decoding="async" />
           <div class="tile-title-hover"><span>${g.title}</span></div>
         `;
-                grid.appendChild(tile);
+                fragment.appendChild(tile);
             });
 
             categoryTiles.forEach(c => {
@@ -891,22 +899,35 @@
                 catCard.className = 'category-tile-wide';
                 catCard.onclick = () => filterByCat(c.cat, c.name);
                 catCard.innerHTML = `
-          <img src="${c.img}" alt="${c.name}" />
+          <img src="${c.img}" alt="${c.name}" loading="lazy" />
           <div class="cat-name">${c.name}</div>
         `;
-                grid.appendChild(catCard);
+                fragment.appendChild(catCard);
             });
 
-            if (gameList.length > displayLimit) {
+            grid.innerHTML = '';
+            grid.appendChild(fragment);
+
+            const canFetchMore = !allFeedsExhausted && nextFeedPage <= 5 && games.length < MAX_GAMES_TARGET;
+            if (gameList.length > displayLimit || (activeCategorySlug === "all" && canFetchMore)) {
                 loadMoreWrap.style.display = 'flex';
-                loadMoreBtn.innerText = `Show More Games (${visibleGames.length} / ${gameList.length})`;
+                loadMoreBtn.innerText = `Show More Games (${visibleGames.length} shown · ${gameList.length} loaded)`;
             } else {
                 loadMoreWrap.style.display = 'none';
             }
         }
 
-        function showMoreGames() {
-            displayLimit += IS_MOBILE ? 120 : 500;
+        async function showMoreGames() {
+            const btn = document.getElementById('loadMoreBtn');
+            if (btn) btn.innerText = "Loading more games...";
+
+            if (activeCategorySlug === "all" && currentList.length <= displayLimit + STEP_DISPLAY_LIMIT) {
+                await fetchNextFeedPage();
+                renderCategoryControls();
+                currentList = games;
+            }
+
+            displayLimit += STEP_DISPLAY_LIMIT;
             renderHomeGrid(currentList, !isPlaying);
         }
 
@@ -929,11 +950,11 @@
                 div.className = 'game-tile';
                 div.style.height = '104px';
                 div.onclick = () => playGame(m);
-                div.innerHTML = `<img src="${m.thumb}" alt="${m.title}" />`;
+                div.innerHTML = `<img src="${m.thumb}" alt="${m.title}" loading="lazy" />`;
                 rail.appendChild(div);
             });
 
-            renderHomeGrid(games, false);
+            renderHomeGrid(currentList, false);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -947,8 +968,9 @@
             document.getElementById('breadTitle').innerText = 'POPULAR GAMES';
             document.getElementById('infoHeading').innerText = `Free Online Games on ${SITE_NAME_FIRST}${SITE_NAME_SECOND}`;
             document.getElementById('infoBody').innerText = 'Play the best free online games directly in your browser on TahmidTech with no downloads required!';
+            currentList = games;
             renderCategoryControls();
-            renderHomeGrid(games, true);
+            renderHomeGrid(currentList, true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -967,7 +989,11 @@
         }
 
         function searchGames() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!q) {
+                renderHomeGrid(games, !isPlaying);
+                return;
+            }
             const filtered = games.filter(g => g.title.toLowerCase().includes(q) || g.cat.includes(q));
             renderHomeGrid(filtered, !isPlaying);
         }
@@ -984,10 +1010,10 @@
             else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
         }
 
-        loadAutoGames();
+        loadInitialFeed();
     </script>
 
-    <!-- PWA অ্যাপ ইনস্টল বাটন ও ক্যাশ রিফ্রেশ -->
+    <!-- PWA অ্যাপ ইনস্টল বাটন -->
     <button id="pwaInstallBtn" style="position:fixed; bottom:16px; right:16px; z-index:9999; background:linear-gradient(135deg,#00d2ff,#0077b6); color:#fff; border:none; padding:10px 16px; border-radius:50px; font-weight:800; font-size:13px; box-shadow:0 6px 18px rgba(0,0,0,0.35); cursor:pointer;">
         📲 Install App
     </button>
